@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UCU SE Chapter</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Custom CSS for colors and font -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        :root {
+            --primary-color: rgb(170, 49, 86);
+            --secondary-color: rgb(47, 93, 160);
+            --text-color: rgb(255, 255, 255);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117; /* Darker background */
+            color: var(--text-color);
+        }
+        .container {
+            max-width: 90%;
+        }
+        .card {
+            background: rgba(22, 27, 34, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 1.5s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .glow-text {
+            text-shadow: 0 0 8px var(--primary-color), 0 0 15px var(--primary-color);
+        }
+        .glow-button {
+            transition: all 0.3s ease;
+            box-shadow: 0 0 5px var(--secondary-color);
+        }
+        .glow-button:hover {
+            box-shadow: 0 0 10px var(--secondary-color), 0 0 20px var(--secondary-color);
+        }
+        input {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            color: var(--text-color);
+        }
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero Section with Registration Form -->
+    <section class="min-h-screen flex items-center justify-center p-4">
+        <div class="card container mx-auto max-w-5xl rounded-lg shadow-2xl overflow-hidden md:flex">
+            <!-- Left Half (Description) -->
+            <div class="md:w-1/2 p-8 flex flex-col justify-center items-center text-center bg-gray-900">
+                <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-4 glow-text">
+                    UCU Software Engineering Chapter
+                </h1>
+                <p class="text-lg mb-6 max-w-sm text-gray-400">
+                    A collaborative space for innovators, developers, and tech enthusiasts. Connect, learn, and build the future with us.
+                </p>
+                <div class="w-full max-w-xs rounded-lg overflow-hidden shadow-lg">
+                    
+                </div>
+            </div>
+
+            <!-- Right Half (Registration Form) -->
+            <div class="md:w-1/2 p-8 bg-primary flex flex-col justify-center">
+                <h2 class="text-3xl font-bold mb-6 text-center">Join the Community</h2>
+                <form id="registrationForm" class="space-y-4">
+                    <!-- Names -->
+                    <div>
+                        <label for="names" class="block text-sm font-medium mb-1">Names</label>
+                        <input type="text" id="names" name="names" required class="w-full px-4 py-2 rounded-md transition-all duration-200">
+                    </div>
+                    <!-- Registration Number -->
+                    <div>
+                        <label for="regNumber" class="block text-sm font-medium mb-1">Registration Number</label>
+                        <input type="text" id="regNumber" name="regNumber" required class="w-full px-4 py-2 rounded-md transition-all duration-200">
+                    </div>
+                    <!-- Course -->
+                    <div>
+                        <label for="course" class="block text-sm font-medium mb-1">Course</label>
+                        <input type="text" id="course" name="course" required class="w-full px-4 py-2 rounded-md transition-all duration-200">
+                    </div>
+                    <!-- Year of Study -->
+                    <div>
+                        <label for="year" class="block text-sm font-medium mb-1">Year of Study</label>
+                        <input type="number" id="year" name="year" required min="1" max="5" class="w-full px-4 py-2 rounded-md transition-all duration-200">
+                    </div>
+                    <!-- Phone Number -->
+                    <div>
+                        <label for="phone" class="block text-sm font-medium mb-1">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" required class="w-full px-4 py-2 rounded-md transition-all duration-200">
+                    </div>
+                    <!-- Email -->
+                    <div>
+                        <label for="email" class="block text-sm font-medium mb-1">Email</label>
+                        <input type="email" id="email" name="email" required class="w-full px-4 py-2 rounded-md transition-all duration-200">
+                    </div>
+
+                    <!-- Submission Button -->
+                    <button type="submit" class="w-full bg-gray-900 text-white font-bold py-3 px-4 rounded-md hover:bg-gray-700 focus:outline-none glow-button">
+                        Register
+                    </button>
+                </form>
+
+                <!-- Confirmation Message Box (Hidden by default) -->
+                <div id="confirmationMessage" class="hidden mt-4 p-4 text-center rounded-md bg-green-500 text-white">
+                    Registration successful! We'll be in touch soon.
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+
+
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const form = event.target;
+            const data = {
+                names: form.names.value,
+                regNumber: form.regNumber.value,
+                course: form.course.value,
+                year: form.year.value,
+                phone: form.phone.value,
+                email: form.email.value
+            };
+
+            console.log('Form data:', data);
+
+            // Here, you would typically send the data to a server
+            // For this example, we'll just show a confirmation message
+            const confirmationMessage = document.getElementById('confirmationMessage');
+            confirmationMessage.classList.remove('hidden');
+
+            // Reset the form after a short delay
+            setTimeout(() => {
+                form.reset();
+                confirmationMessage.classList.add('hidden');
+            }, 3000);
+        });
+    </script>
+
+</body>
+</html>
