@@ -48,12 +48,12 @@
         .glow-button:hover {
             box-shadow: 0 0 10px var(--secondary-color), 0 0 20px var(--secondary-color);
         }
-        input {
+        input, select {
             background-color: #161b22;
             border: 1px solid #30363d;
             color: var(--text-color);
         }
-        input:focus {
+        input:focus, select:focus {
             outline: none;
             border-color: var(--primary-color);
             box-shadow: 0 0 0 2px var(--primary-color);
@@ -74,90 +74,92 @@
                     A collaborative space for innovators, developers, and tech enthusiasts. Connect, learn, and build the future with us.
                 </p>
                 <div class="w-full max-w-xs rounded-lg overflow-hidden shadow-lg">
-                    
+                    <!-- Placeholder for a tech-themed image -->
                 </div>
             </div>
 
             <!-- Right Half (Registration Form) -->
             <div class="md:w-1/2 p-8 bg-primary flex flex-col justify-center">
-                <h2 class="text-3xl font-bold mb-6 text-center">Join the Community</h2>
-                <form id="registrationForm" class="space-y-4">
-                    <!-- Names -->
-                    <div>
-                        <label for="names" class="block text-sm font-medium mb-1">Names</label>
-                        <input type="text" id="names" name="names" required class="w-full px-4 py-2 rounded-md transition-all duration-200">
-                    </div>
-                    <!-- Registration Number -->
-                    <div>
-                        <label for="regNumber" class="block text-sm font-medium mb-1">Registration Number</label>
-                        <input type="text" id="regNumber" name="regNumber" required class="w-full px-4 py-2 rounded-md transition-all duration-200">
-                    </div>
-                    <!-- Course -->
-                    <div>
-                        <label for="course" class="block text-sm font-medium mb-1">Course</label>
-                        <input type="text" id="course" name="course" required class="w-full px-4 py-2 rounded-md transition-all duration-200">
-                    </div>
-                    <!-- Year of Study -->
-                    <div>
-                        <label for="year" class="block text-sm font-medium mb-1">Year of Study</label>
-                        <input type="number" id="year" name="year" required min="1" max="5" class="w-full px-4 py-2 rounded-md transition-all duration-200">
-                    </div>
-                    <!-- Phone Number -->
-                    <div>
-                        <label for="phone" class="block text-sm font-medium mb-1">Phone Number</label>
-                        <input type="tel" id="phone" name="phone" required class="w-full px-4 py-2 rounded-md transition-all duration-200">
-                    </div>
-                    <!-- Email -->
-                    <div>
-                        <label for="email" class="block text-sm font-medium mb-1">Email</label>
-                        <input type="email" id="email" name="email" required class="w-full px-4 py-2 rounded-md transition-all duration-200">
-                    </div>
+                <form action="https://docs.google.com/forms/d/e/1FAIpQLSdRcThC5KlFgVbZ5cSkusD_6yXbhJ-qCOK6kQq-OaW2F2Vzzg/formResponse"
+                    target="_self"
+                    id="bootstrapForm"
+                    method="POST"
+                    class="space-y-4">
+                    <fieldset class="mb-4 text-center">
+                        <h2 class="text-3xl font-bold text-center mb-1">
+                            SWE UCU CHAPTER: Advent 2025 Registration
+                        </h2>
+                    </fieldset>
 
-                    <!-- Submission Button -->
+                    <!-- Field type: "short" id: "1003155401" -->
+                    <fieldset>
+                        <legend for="1003155401" class="block text-sm font-medium mb-1">Names</legend>
+                        <div class="form-group">
+                            <input id="722300802" type="text" name="entry.722300802" class="w-full px-4 py-2 rounded-md transition-all duration-200" required>
+                        </div>
+                    </fieldset>
+
+                    <!-- Field type: "short" id: "1594334233" -->
+                    <fieldset>
+                        <legend for="1594334233" class="block text-sm font-medium mb-1">Registration Number</legend>
+                        <div class="form-group">
+                            <input id="68691639" type="text" name="entry.68691639" class="w-full px-4 py-2 rounded-md transition-all duration-200" required>
+                        </div>
+                    </fieldset>
+
+                    <!-- Field type: "short" id: "504971672" -->
+                    <fieldset>
+                        <legend for="504971672" class="block text-sm font-medium mb-1">Course</legend>
+                        <div class="form-group">
+                            <input id="197235073" type="text" name="entry.197235073" class="w-full px-4 py-2 rounded-md transition-all duration-200" required>
+                        </div>
+                    </fieldset>
+
+                    <!-- Field type: "short" id: "1900599558" -->
+                    <fieldset>
+                        <legend for="1900599558" class="block text-sm font-medium mb-1">Year of Study</legend>
+                        <div class="form-group">
+                            <select id="609490681" name="entry.609490681" class="w-full px-4 py-2 rounded-md transition-all duration-200" required>
+                                <option value="">Select your year of study</option>
+                                <option value="1:1">1:1</option>
+                                <option value="1:2">1:2</option>
+                                <option value="2:1">2:1</option>
+                                <option value="2:2">2:2</option>
+                                <option value="3:1">3:1</option>
+                                <option value="3:2">3:2</option>
+                                <option value="4:1">4:1</option>
+                                <option value="4:2">4:2</option>
+                            </select>
+                        </div>
+                    </fieldset>
+
+                    <!-- Field type: "short" id: "703170291" -->
+                    <fieldset>
+                        <legend for="703170291" class="block text-sm font-medium mb-1">Phone Number</legend>
+                        <div class="form-group">
+                            <input id="423052962" type="tel" name="entry.423052962" class="w-full px-4 py-2 rounded-md transition-all duration-200" required>
+                        </div>
+                    </fieldset>
+
+                    <!-- Field type: "short" id: "1225690086" -->
+                    <fieldset>
+                        <legend for="1225690086" class="block text-sm font-medium mb-1">Email</legend>
+                        <div class="form-group">
+                            <input id="326319578" type="email" name="entry.326319578" class="w-full px-4 py-2 rounded-md transition-all duration-200" required>
+                        </div>
+                    </fieldset>
+
+                    <input type="hidden" name="fvv" value="1">
+                    <input type="hidden" name="fbzx" value="-928894630485065899">
+                    <input type="hidden" name="pageHistory" value="0">
+
                     <button type="submit" class="w-full bg-gray-900 text-white font-bold py-3 px-4 rounded-md hover:bg-gray-700 focus:outline-none glow-button">
-                        Register
+                        Submit
                     </button>
                 </form>
-
-                <!-- Confirmation Message Box (Hidden by default) -->
-                <div id="confirmationMessage" class="hidden mt-4 p-4 text-center rounded-md bg-green-500 text-white">
-                    Registration successful! We'll be in touch soon.
-                </div>
             </div>
         </div>
-
     </section>
-
-
-
-    <script>
-        document.getElementById('registrationForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent the default form submission
-
-            const form = event.target;
-            const data = {
-                names: form.names.value,
-                regNumber: form.regNumber.value,
-                course: form.course.value,
-                year: form.year.value,
-                phone: form.phone.value,
-                email: form.email.value
-            };
-
-            console.log('Form data:', data);
-
-            // Here, you would typically send the data to a server
-            // For this example, we'll just show a confirmation message
-            const confirmationMessage = document.getElementById('confirmationMessage');
-            confirmationMessage.classList.remove('hidden');
-
-            // Reset the form after a short delay
-            setTimeout(() => {
-                form.reset();
-                confirmationMessage.classList.add('hidden');
-            }, 3000);
-        });
-    </script>
 
 </body>
 </html>
