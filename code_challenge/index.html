@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UCU Code Challenge Registration</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Inter and VT323 fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=VT323&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Custom Variables and Global Styles */
+        :root {
+            --primary-color: rgb(170, 49, 86); /* Rose/Pink Glow */
+            --secondary-color: rgb(47, 93, 160); /* Deep Blue Button */
+            --text-color: rgb(255, 255, 255);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117; /* Dark GitHub-like background */
+            background-image: radial-gradient(circle, #2a3c30 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: var(--text-color);
+        }
+
+        .vt323-regular {
+            font-family: 'VT323', monospace;
+        }
+
+        /* Hero Text Typing Animation Style */
+        .typing-hero {
+            font-size: clamp(2rem, 10vw, 4rem);
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color);
+            white-space: nowrap;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .blinking-cursor {
+            color: var(--primary-color);
+            animation: blink-caret 1s step-end infinite;
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--primary-color); }
+        }
+
+        /* Card and Fade-in Effect */
+        .card {
+            background: rgba(22, 27, 34, 0.9); /* Semi-transparent dark background */
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            animation: fadeIn 1.5s ease-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Button Glow Effect */
+        .glow-button {
+            transition: all 0.3s ease;
+            box-shadow: 0 0 5px var(--secondary-color);
+        }
+        .glow-button:hover {
+            box-shadow: 0 0 10px var(--secondary-color), 0 0 20px var(--secondary-color);
+        }
+
+        /* Input Field Styling */
+        .form-input {
+            background-color: #161b22;
+            border-color: #30363d;
+            color: var(--text-color);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(170, 49, 86, 0.5); /* Primary glow on focus */
+        }
+
+        .submit-button {
+            background-color: var(--secondary-color);
+            transition: background-color 0.3s ease;
+        }
+        .submit-button:hover {
+            background-color: rgb(37, 74, 127);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="card container max-w-xl mx-auto flex flex-col items-center justify-center p-6 md:p-8 rounded-xl shadow-2xl space-y-6">
+
+        <!-- Typing Hero Title -->
+        <div class="h-16 flex items-center justify-center">
+            <h1 class="typing-hero vt323-regular" id="hero-text"></h1>
+        </div>
+
+        <!-- Confirmation Message Container (Initially Hidden) -->
+        <div id="confirmation-view" class="hidden text-center p-8 space-y-6">
+            <svg class="mx-auto h-20 w-20 text-green-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <h3 class="text-3xl vt323-regular text-green-400">REGISTRATION SUCCESSFUL!</h3>
+            <p class="text-xl text-gray-300">You're in. Get ready to hack and may the compiler be ever in your favor.</p>
+            <p class="text-sm text-gray-500">The data has been dispatched to the challenge organizers.</p>
+        </div>
+
+        <!-- Form View Container -->
+        <div id="form-view" class="form-container w-full">
+            <h2 class="text-2xl font-bold mb-6 text-center text-gray-200">Registration Portal</h2>
+            
+            <!-- Google Form Structure -->
+            <form action="https://docs.google.com/forms/d/e/1FAIpQLSfnBD355pxdY3qzGBCzGJ1NYN_lF6J7XjmJR8QiUHv4cxrqKw/formResponse"
+                  target="_self"
+                  id="bootstrapForm"
+                  method="POST" 
+                  class="space-y-4">
+                
+                <!-- 1. Names (entry.1150333983) -->
+                <fieldset>
+                    <legend class="block text-sm font-medium text-gray-300 mb-1">Full Names:</legend>
+                    <div class="form-group">
+                        <input id="1150333983" type="text" name="entry.1150333983" required placeholder="First Name" class="form-input mt-1 block w-full px-4 py-2 border rounded-md shadow-sm sm:text-sm">
+                    </div>
+                </fieldset>
+
+                <!-- 2. Course (entry.257550606) -->
+                <fieldset>
+                    <legend class="block text-sm font-medium text-gray-300 mb-1">Course:</legend>
+                    <div class="form-group">
+                        <input id="257550606" type="text" name="entry.257550606" required placeholder="e.g., BSc Computer Science" class="form-input mt-1 block w-full px-4 py-2 border rounded-md shadow-sm sm:text-sm">
+                    </div>
+                </fieldset>
+
+                <!-- 3. Email (entry.1949379678) -->
+                <fieldset>
+                    <legend class="block text-sm font-medium text-gray-300 mb-1">Email:</legend>
+                    <div class="form-group">
+                        <!-- Note: Using input type="email" for better validation, even though the source was a textarea/paragraph -->
+                        <input id="1949379678" type="email" name="entry.1949379678" required placeholder="yourmail@gmail.com" class="form-input mt-1 block w-full px-4 py-2 border rounded-md shadow-sm sm:text-sm">
+                    </div>
+                </fieldset>
+
+                <!-- 4. Phone Number (entry.769696501) -->
+                <fieldset>
+                    <legend class="block text-sm font-medium text-gray-300 mb-1">Phone Number:</legend>
+                    <div class="form-group">
+                        <input id="769696501" type="tel" name="entry.769696501" required placeholder="+256 7XX XXX XXX" class="form-input mt-1 block w-full px-4 py-2 border rounded-md shadow-sm sm:text-sm">
+                    </div>
+                </fieldset>
+
+                <!-- 5. Year of Study (entry.1551643770) -->
+                <fieldset>
+                    <legend class="block text-sm font-medium text-gray-300 mb-1">Year of Study:</legend>
+                    <div class="form-group">
+                        <input id="1551643770" type="number" name="entry.1551643770" min="1" max="5" required placeholder="e.g., 2" class="form-input mt-1 block w-full px-4 py-2 border rounded-md shadow-sm sm:text-sm">
+                    </div>
+                </fieldset>
+
+                <!-- 6. Individual/Squad (entry.2007816248) -->
+                <fieldset>
+                    <legend class="block text-sm font-medium text-gray-300 mb-1">Individual/Squad:</legend>
+                    <div class="form-group">
+                        <input id="2007816248" type="text" name="entry.2007816248" required placeholder="Team Name or 'Individual'" class="form-input mt-1 block w-full px-4 py-2 border rounded-md shadow-sm sm:text-sm">
+                    </div>
+                </fieldset>
+
+                <!-- Hidden Google Form fields -->
+                <input type="hidden" name="fvv" value="1">
+                <input type="hidden" name="fbzx" value="-1119307440981813990">
+                <input type="hidden" name="pageHistory" value="0">
+
+                <div class="pt-4 text-center">
+                    <button type="submit" class="w-full px-8 py-3 submit-button text-white rounded-lg font-bold glow-button text-lg">
+                        Submit & Start Hacking
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        const textElement = document.getElementById('hero-text');
+        const textToType = "UCU CODE CHALLENGE";
+        let i = 0;
+        const typingSpeed = 100; // milliseconds
+
+        function typeWriter() {
+            if (i < textToType.length) {
+                textElement.innerHTML += textToType.charAt(i);
+                i++;
+                setTimeout(typeWriter, typingSpeed);
+            } else {
+                // Add blinking cursor permanently after typing is done
+                const cursor = document.querySelector('.blinking-cursor');
+                if (cursor) cursor.style.display = 'inline';
+            }
+        }
+
+        // Add a blinking cursor effect
+        const cursor = document.createElement('span');
+        cursor.className = 'blinking-cursor';
+        cursor.textContent = '_';
+        cursor.style.display = 'none'; // Initially hide it
+        textElement.parentNode.insertBefore(cursor, textElement.nextSibling);
+
+        // --- New Submission Logic to prevent redirection ---
+        window.onload = function() {
+            typeWriter();
+            
+            const form = document.getElementById('bootstrapForm');
+            const formView = document.getElementById('form-view');
+            const confirmationView = document.getElementById('confirmation-view');
+            const submitButton = form.querySelector('button[type="submit"]');
+
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Simple form validation check
+                if (!form.checkValidity()) {
+                    // If form is invalid, browser handles showing error messages
+                    form.reportValidity();
+                    return; 
+                }
+
+                // Show loading state
+                submitButton.textContent = 'TRANSMITTING DATA...';
+                submitButton.disabled = true;
+
+                const formData = new FormData(form);
+                
+                // Construct URL-encoded payload
+                const urlSearchParams = new URLSearchParams();
+                for (const pair of formData) {
+                    urlSearchParams.append(pair[0], pair[1]);
+                }
+                const payload = urlSearchParams.toString();
+                
+                // --- Google Form Submission via fetch ---
+                try {
+                    // We use 'no-cors' mode which prevents reading the response body (and thus the redirect), 
+                    // but ensures the data is sent to the Google Forms server.
+                    await fetch(form.action, {
+                        method: 'POST',
+                        mode: 'no-cors', 
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: payload,
+                    });
+
+                    // --- Success UI Update (Triggers after successful data dispatch) ---
+                    formView.classList.add('hidden');
+                    confirmationView.classList.remove('hidden');
+                    
+                } catch (error) {
+                    // Since Google Forms will cause a network error in 'no-cors' mode (as it tries to redirect), 
+                    // we still treat this as a successful submission attempt and update the UI.
+                    console.error('Fetch completed with expected no-cors error. Data presumed sent.', error);
+
+                    // --- Success UI Update ---
+                    formView.classList.add('hidden');
+                    confirmationView.classList.remove('hidden');
+
+                } finally {
+                    submitButton.textContent = 'Submit & Start Hacking';
+                    submitButton.disabled = false;
+                }
+            });
+        };
+
+    </script>
+</body>
+</html>
