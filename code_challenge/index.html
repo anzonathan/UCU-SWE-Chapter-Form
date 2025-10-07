@@ -14,9 +14,10 @@
     <style>
         /* Custom Variables and Global Styles */
         :root {
-            --primary-color: rgb(170, 49, 86); /* Rose/Pink Glow */
-            --secondary-color: rgb(47, 93, 160); /* Deep Blue Button */
+            --primary-color: rgb(170, 49, 86); /* Rose/Pink Glow (Hero Text & Timer) */
+            --secondary-color: rgb(47, 93, 160); /* Deep Blue (Button) */
             --text-color: rgb(255, 255, 255);
+            /* --bomb-red is no longer used, we now use --primary-color */
         }
         body {
             font-family: 'Inter', sans-serif;
@@ -100,6 +101,17 @@
         .submit-button:hover {
             background-color: rgb(37, 74, 127);
         }
+
+        /* Bomb Timer Styling - Updated to use Primary Color */
+        #countdown-timer {
+
+        }
+        #timer-display {
+            color: var(--primary-color);
+            /* Use primary color for the text shadow */
+            text-shadow: 0 0 10px rgba(170, 49, 86, 0.8);
+            font-weight: 700;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-4">
@@ -111,7 +123,25 @@
             <h1 class="typing-hero vt323-regular" id="hero-text"></h1>
         </div>
 
-        <!-- Confirmation Message Container (Initially Hidden) -->
+        <!-- === BOMB TIMER DISPLAY === -->
+        <div id="countdown-timer" class="text-center mb-6 p-4 rounded-lg w-full">
+            <!-- text-red-400 replaced with inline style using primary color -->
+            <p class="text-sm font-bold mb-2" style="color: var(--primary-color); text-shadow: 0 0 5px rgba(170, 49, 86, 0.5);">REGISTRATION CLOSURE IN:</p>
+            <div class="vt323-regular text-4xl sm:text-6xl" id="timer-display">
+                --D : --H : --M : --S
+            </div>
+        </div>
+        
+        <!-- Timer Expired Message (Initially Hidden) -->
+        <div id="closed-view" class="hidden text-center p-8 space-y-6 w-full">
+            <!-- Consistency: Ensure the closed message matches the new primary glow color -->
+            <h3 class="text-4xl vt323-regular animate-pulse" style="color: var(--primary-color); text-shadow: 0 0 10px rgba(170, 49, 86, 0.8);">ACCESS DENIED!</h3>
+            <p class="text-xl text-gray-300">Registration is now **closed**. The self-destruct sequence is complete.</p>
+            <p class="text-sm text-gray-500">Thank you for your interest. Please await further announcements.</p>
+        </div>
+        
+
+        <!-- Confirmation Message Container (Hidden after successful submit) -->
         <div id="confirmation-view" class="hidden text-center p-8 space-y-6">
             <svg class="mx-auto h-20 w-20 text-green-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -123,7 +153,7 @@
 
         <!-- Form View Container -->
         <div id="form-view" class="form-container w-full">
-            <h2 class="text-2xl font-bold mb-6 text-center text-gray-200">Registration Portal</h2>
+        
             
             <!-- Google Form Structure -->
             <form action="https://docs.google.com/forms/d/e/1FAIpQLSfnBD355pxdY3qzGBCzGJ1NYN_lF6J7XjmJR8QiUHv4cxrqKw/formResponse"
@@ -152,7 +182,6 @@
                 <fieldset>
                     <legend class="block text-sm font-medium text-gray-300 mb-1">Email:</legend>
                     <div class="form-group">
-                        <!-- Note: Using input type="email" for better validation, even though the source was a textarea/paragraph -->
                         <input id="1949379678" type="email" name="entry.1949379678" required placeholder="yourmail@gmail.com" class="form-input mt-1 block w-full px-4 py-2 border rounded-md shadow-sm sm:text-sm">
                     </div>
                 </fieldset>
@@ -201,13 +230,49 @@
         let i = 0;
         const typingSpeed = 100; // milliseconds
 
+        const timerDisplay = document.getElementById('timer-display');
+        const countdownTimer = document.getElementById('countdown-timer');
+        const formView = document.getElementById('form-view');
+        const closedView = document.getElementById('closed-view');
+        const confirmationView = document.getElementById('confirmation-view');
+        
+        // Target date: October 9th, 2025, 23:59:00 (11:59 PM)
+        const targetDate = new Date('October 9, 2025 23:59:00').getTime();
+
+        function pad(num) {
+            return String(num).padStart(2, '0');
+        }
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance < 0) {
+                // Time's up! Registration closed.
+                clearInterval(countdownInterval);
+                countdownTimer.classList.add('hidden');
+                formView.classList.add('hidden');
+                closedView.classList.remove('hidden');
+                return;
+            }
+
+            // Time calculations for days, hours, minutes and seconds
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Display the result
+            timerDisplay.innerHTML = 
+                `${pad(days)}D : ${pad(hours)}H : ${pad(minutes)}M : ${pad(seconds)}S`;
+        }
+
         function typeWriter() {
             if (i < textToType.length) {
                 textElement.innerHTML += textToType.charAt(i);
                 i++;
                 setTimeout(typeWriter, typingSpeed);
             } else {
-                // Add blinking cursor permanently after typing is done
                 const cursor = document.querySelector('.blinking-cursor');
                 if (cursor) cursor.style.display = 'inline';
             }
@@ -220,69 +285,70 @@
         cursor.style.display = 'none'; // Initially hide it
         textElement.parentNode.insertBefore(cursor, textElement.nextSibling);
 
-        // --- New Submission Logic to prevent redirection ---
+        // Start the countdown immediately (or on window load)
+        const countdownInterval = setInterval(updateCountdown, 1000);
+        updateCountdown(); // Run once immediately to prevent flicker
+
+        // --- Submission Logic ---
         window.onload = function() {
             typeWriter();
             
             const form = document.getElementById('bootstrapForm');
-            const formView = document.getElementById('form-view');
-            const confirmationView = document.getElementById('confirmation-view');
             const submitButton = form.querySelector('button[type="submit"]');
 
-            form.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                
-                // Simple form validation check
-                if (!form.checkValidity()) {
-                    // If form is invalid, browser handles showing error messages
-                    form.reportValidity();
-                    return; 
-                }
+            // Check if registration is already closed on load
+            if (closedView.classList.contains('hidden')) {
 
-                // Show loading state
-                submitButton.textContent = 'TRANSMITTING DATA...';
-                submitButton.disabled = true;
-
-                const formData = new FormData(form);
-                
-                // Construct URL-encoded payload
-                const urlSearchParams = new URLSearchParams();
-                for (const pair of formData) {
-                    urlSearchParams.append(pair[0], pair[1]);
-                }
-                const payload = urlSearchParams.toString();
-                
-                // --- Google Form Submission via fetch ---
-                try {
-                    // We use 'no-cors' mode which prevents reading the response body (and thus the redirect), 
-                    // but ensures the data is sent to the Google Forms server.
-                    await fetch(form.action, {
-                        method: 'POST',
-                        mode: 'no-cors', 
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                        body: payload,
-                    });
-
-                    // --- Success UI Update (Triggers after successful data dispatch) ---
-                    formView.classList.add('hidden');
-                    confirmationView.classList.remove('hidden');
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault();
                     
-                } catch (error) {
-                    // Since Google Forms will cause a network error in 'no-cors' mode (as it tries to redirect), 
-                    // we still treat this as a successful submission attempt and update the UI.
-                    console.error('Fetch completed with expected no-cors error. Data presumed sent.', error);
+                    if (!form.checkValidity()) {
+                        form.reportValidity();
+                        return; 
+                    }
 
-                    // --- Success UI Update ---
-                    formView.classList.add('hidden');
-                    confirmationView.classList.remove('hidden');
+                    // Show loading state
+                    submitButton.textContent = 'TRANSMITTING DATA...';
+                    submitButton.disabled = true;
 
-                } finally {
-                    submitButton.textContent = 'Submit & Start Hacking';
-                    submitButton.disabled = false;
-                }
-            });
+                    const formData = new FormData(form);
+                    
+                    // Construct URL-encoded payload
+                    const urlSearchParams = new URLSearchParams();
+                    for (const pair of formData) {
+                        urlSearchParams.append(pair[0], pair[1]);
+                    }
+                    const payload = urlSearchParams.toString();
+                    
+                    // Google Form Submission via fetch (no-cors mode prevents redirection)
+                    try {
+                        await fetch(form.action, {
+                            method: 'POST',
+                            mode: 'no-cors', 
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body: payload,
+                        });
+
+                        // Success UI Update
+                        formView.classList.add('hidden');
+                        confirmationView.classList.remove('hidden');
+                        
+                    } catch (error) {
+                        // In 'no-cors' mode, we treat any response as a successful dispatch
+                        console.error('Fetch completed with expected no-cors issue. Data presumed sent.', error);
+
+                        // Success UI Update
+                        formView.classList.add('hidden');
+                        confirmationView.classList.remove('hidden');
+
+                    } finally {
+                        submitButton.textContent = 'Submit & Start Hacking';
+                        submitButton.disabled = false;
+                    }
+                });
+            }
         };
 
     </script>
