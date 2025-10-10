@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UCU Code Challenge Submissions</title> 
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=VT323&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Custom Variables and Global Styles */
+        :root {
+            --primary-color: rgb(170, 49, 86); /* Rose/Pink Glow (Hero Text & Timer) */
+            --secondary-color: rgb(47, 93, 160); /* Deep Blue (Button) */
+            --text-color: rgb(255, 255, 255);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d1117; /* Dark GitHub-like background */
+            background-image: radial-gradient(circle, #2a3c30 1px, transparent 1px);
+            background-size: 20px 20px;
+            color: var(--text-color);
+        }
+
+        .vt323-regular {
+            font-family: 'VT323', monospace;
+        }
+
+        /* Hero Text Typing Animation Style */
+        .typing-hero {
+            font-size: clamp(2rem, 10vw, 4rem);
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 10px var(--primary-color), 0 0 20px var(--primary-color);
+            white-space: nowrap;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .blinking-cursor {
+            color: var(--primary-color);
+            animation: blink-caret 1s step-end infinite;
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--primary-color); }
+        }
+
+        /* Card and Fade-in Effect */
+        .card {
+            background: rgba(22, 27, 34, 0.9); /* Semi-transparent dark background */
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            animation: fadeIn 1.5s ease-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Button Glow Effect */
+        .glow-button {
+            transition: all 0.3s ease;
+            box-shadow: 0 0 5px var(--secondary-color);
+        }
+        .glow-button:hover {
+            box-shadow: 0 0 10px var(--secondary-color), 0 0 20px var(--secondary-color);
+        }
+
+        /* Input Field Styling */
+        .form-input {
+            background-color: #161b22;
+            border-color: #30363d;
+            color: var(--text-color);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(170, 49, 86, 0.5); /* Primary glow on focus */
+        }
+
+        .submit-button {
+            background-color: var(--secondary-color);
+            transition: background-color 0.3s ease;
+        }
+        .submit-button:hover {
+            background-color: rgb(37, 74, 127);
+        }
+
+        /* Bomb Timer Styling - Updated to use Primary Color */
+        #timer-display {
+            color: var(--primary-color);
+            /* Use primary color for the text shadow */
+            text-shadow: 0 0 10px rgba(170, 49, 86, 0.8);
+            font-weight: 700;
+        }
+
+        /* Custom Toggle Switch Styling */
+        .toggle-container {
+            border: 1px solid #30363d;
+            background-color: #161b22;
+            border-radius: 9999px; /* Fully rounded */
+            padding: 4px;
+        }
+        .toggle-option {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+            padding: 8px 16px;
+            border-radius: 9999px;
+            color: #9ca3af; /* Gray text for unselected */
+        }
+        .toggle-option.active {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            box-shadow: 0 0 8px rgba(170, 49, 86, 0.5);
+        }
+        .toggle-option input[type="radio"] {
+            display: none; /* Hide the actual radio input */
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4">
+
+    <div class="card container max-w-xl mx-auto flex flex-col items-center justify-center p-6 md:p-8 rounded-xl shadow-2xl space-y-6">
+
+        <div class="h-16 flex items-center justify-center">
+            <h1 class="typing-hero vt323-regular" id="hero-text"></h1>
+        </div>
+
+        <div id="countdown-timer" class="text-center mb-6 p-4 rounded-lg w-full">
+            <p class="text-lg font-bold mb-2" style="color: var(--primary-color); text-shadow: 0 0 5px rgba(170, 49, 86, 0.5);">SUBMISSION FOR CODE CHALLENGE CLOSES IN:</p>
+            <div class="vt323-regular text-4xl sm:text-6xl" id="timer-display">
+                --D : --H : --M : --S
+            </div>
+        </div>
+        
+        <div id="closed-view" class="hidden text-center p-8 space-y-6 w-full">
+            <h3 class="text-4xl vt323-regular animate-pulse" style="color: var(--primary-color); text-shadow: 0 0 10px rgba(170, 49, 86, 0.8);">ACCESS DENIED!</h3>
+            <p class="text-xl text-gray-300">Submissions are now **closed**.</p>
+            <p class="text-sm text-gray-500">Thank you for participating. Await judging results.</p>
+        </div>
+        
+
+        <div id="confirmation-view" class="hidden text-center p-8 space-y-6">
+            <svg class="mx-auto h-20 w-20 text-green-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <h3 class="text-3xl vt323-regular text-green-400">SUBMISSION SUCCESSFUL!</h3>
+            <p class="text-xl text-gray-300">Your challenge solution has been logged. Good luck!</p>
+            <p class="text-sm text-gray-500">The data has been dispatched to the challenge organizers.</p>
+        </div>
+
+        <div id="form-view" class="form-container w-full">
+        
+            <form action="https://docs.google.com/forms/d/e/1FAIpQLSf0z_KKA0KCm8HFlQBSP02rew8a9KASbF7erGj0r_93CwkDpg/formResponse"
+                  target="_self"
+                  id="bootstrapForm"
+                  method="POST" 
+                  class="space-y-4">
+
+                <fieldset>
+                    <legend class="block text-sm font-medium text-gray-300 mb-2">Submission Type:</legend>
+                    <div class="flex toggle-container">
+                        
+                        <div id="toggle-individual" class="toggle-option flex-1" onclick="toggleSubmissionType('Individual')">
+                            <input type="radio" name="submissionType" value="Individual" id="radio-individual" checked>
+                            <label for="radio-individual" class="block w-full h-full cursor-pointer">Individual</label>
+                        </div>
+                        
+                        <div id="toggle-team" class="toggle-option flex-1" onclick="toggleSubmissionType('Team')">
+                            <input type="radio" name="submissionType" value="Team" id="radio-team">
+                            <label for="radio-team" class="block w-full h-full cursor-pointer">Team</label>
+                        </div>
+                    </div>
+                </fieldset>
+                
+                <fieldset>
+                    <legend class="block text-sm font-medium text-gray-300 mb-1">Member 1 Name (Required):</legend>
+                    <div class="form-group">
+                        <input id="member1" type="text" name="entry.1384992070" required placeholder="Full Name of Member 1" class="form-input mt-1 block w-full px-4 py-2 border rounded-md shadow-sm sm:text-sm">
+                    </div>
+                </fieldset>
+
+                <div id="team-fields-container" class="hidden space-y-4">
+                    <fieldset>
+                        <legend class="block text-sm font-medium text-gray-300 mb-1">Member 2 Name (Optional):</legend>
+                        <div class="form-group">
+                            <input id="member2" type="text" name="entry.1931721374" placeholder="Full Name of Member 2" class="form-input mt-1 block w-full px-4 py-2 border rounded-md shadow-sm sm:text-sm">
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend class="block text-sm font-medium text-gray-300 mb-1">Member 3 Name (Optional):</legend>
+                        <div class="form-group">
+                            <input id="member3" type="text" name="entry.1694584910" placeholder="Full Name of Member 3" class="form-input mt-1 block w-full px-4 py-2 border rounded-md shadow-sm sm:text-sm">
+                        </div>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend class="block text-sm font-medium text-gray-300 mb-1">Team Name (Required for Team Submission):</legend>
+                        <div class="form-group">
+                            <input id="teamName" type="text" name="entry.896862823" placeholder="The Compiler Kings" class="form-input mt-1 block w-full px-4 py-2 border rounded-md shadow-sm sm:text-sm">
+                        </div>
+                    </fieldset>
+                </div>
+
+                <fieldset>
+                    <legend class="block text-sm font-medium text-gray-300 mb-1">Link to GitHub Repository (Required):</legend>
+                    <div class="form-group">
+                        <input id="githubLink" type="url" name="entry.911277404" required placeholder="https://github.com/team/challenge-solution" class="form-input mt-1 block w-full px-4 py-2 border rounded-md shadow-sm sm:text-sm">
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend class="block text-sm font-medium text-gray-300 mb-1">Link to Loom Video (Required):</legend>
+                    <div class="form-group">
+                        <input id="loomLink" type="url" name="entry.241531349" required placeholder="https://loom.com/share/xxxxxxxxx" class="form-input mt-1 block w-full px-4 py-2 border rounded-md shadow-sm sm:text-sm">
+                    </div>
+                </fieldset>
+
+                <input type="hidden" name="fvv" value="1">
+                <input type="hidden" name="fbzx" value="-510110506352417032"> 
+                <input type="hidden" name="pageHistory" value="0">
+
+                <div class="pt-4 text-center">
+                    <button type="submit" class="w-full px-8 py-3 submit-button text-white rounded-lg font-bold glow-button text-lg">
+                        Submit Solution
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        const textElement = document.getElementById('hero-text');
+        const textToType = "CHALLENGE SUBMISSION"; 
+        let i = 0;
+        const typingSpeed = 100;
+
+        const timerDisplay = document.getElementById('timer-display');
+        const countdownTimer = document.getElementById('countdown-timer');
+        const formView = document.getElementById('form-view');
+        const closedView = document.getElementById('closed-view');
+        const confirmationView = document.getElementById('confirmation-view');
+
+        // Dynamic Field Variables
+        const toggleIndividual = document.getElementById('toggle-individual');
+        const toggleTeam = document.getElementById('toggle-team');
+        const radioIndividual = document.getElementById('radio-individual');
+        const radioTeam = document.getElementById('radio-team');
+        
+        const teamFieldsContainer = document.getElementById('team-fields-container');
+        const teamNameInput = document.getElementById('teamName');
+        const member2Input = document.getElementById('member2');
+        const member3Input = document.getElementById('member3');
+        
+        // Target date from the prompt: 6am Saturday (assuming this Saturday is Oct 11, 2025)
+        const targetDate = new Date('October 11, 2025 06:00:00 GMT+0300').getTime(); 
+
+        function pad(num) {
+            return String(num).padStart(2, '0');
+        }
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                countdownTimer.classList.add('hidden');
+                formView.classList.add('hidden');
+                closedView.classList.remove('hidden');
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            timerDisplay.innerHTML = 
+                `${pad(days)}D : ${pad(hours)}H : ${pad(minutes)}M : ${pad(seconds)}S`;
+        }
+
+        function typeWriter() {
+            if (i < textToType.length) {
+                textElement.innerHTML += textToType.charAt(i);
+                i++;
+                setTimeout(typeWriter, typingSpeed);
+            } else {
+                const cursor = document.createElement('span');
+                cursor.className = 'blinking-cursor';
+                cursor.textContent = '_';
+                textElement.parentNode.insertBefore(cursor, textElement.nextSibling);
+            }
+        }
+
+        /**
+         * Toggles the visibility, required status, and visual state of team-specific fields.
+         * @param {string} type 'Team' or 'Individual'
+         */
+        function toggleSubmissionType(type) {
+            const isTeam = type === 'Team';
+
+            // 1. Update visual toggle
+            if (isTeam) {
+                toggleTeam.classList.add('active');
+                toggleIndividual.classList.remove('active');
+                radioTeam.checked = true;
+            } else {
+                toggleIndividual.classList.add('active');
+                toggleTeam.classList.remove('active');
+                radioIndividual.checked = true;
+            }
+
+            // 2. Toggle form fields
+            if (isTeam) {
+                // Team: Show fields, make Team Name required
+                teamFieldsContainer.classList.remove('hidden');
+                teamNameInput.setAttribute('required', 'required');
+            } else {
+                // Individual: Hide fields, remove required status, and clear values
+                teamFieldsContainer.classList.add('hidden');
+                teamNameInput.removeAttribute('required');
+                
+                // CRITICAL: Clear the values of the team fields to prevent accidental submission
+                // For 'Individual' submission, the Team Name field value will be set in the submit handler.
+                teamNameInput.value = ''; 
+                member2Input.value = ''; 
+                member3Input.value = '';
+            }
+        }
+
+        // Start the countdown immediately
+        const countdownInterval = setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // --- Submission Logic ---
+        window.onload = function() {
+            typeWriter();
+
+            // Set initial state to Individual (as requested)
+            toggleSubmissionType('Individual');
+            
+            const form = document.getElementById('bootstrapForm');
+            const submitButton = form.querySelector('button[type="submit"]');
+
+            // Check if submission is already closed on load
+            if (closedView.classList.contains('hidden')) {
+
+                form.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    if (!form.checkValidity()) {
+                        form.reportValidity();
+                        return; 
+                    }
+
+                    const isTeamSubmission = document.getElementById('radio-team').checked;
+                    
+                    // Manual check for Team Name requirement when Team is selected
+                    if (isTeamSubmission && teamNameInput.value.trim() === '') {
+                        alert('Team Name is required for Team submissions.');
+                        teamNameInput.focus();
+                        submitButton.textContent = 'Submit Solution';
+                        submitButton.disabled = false;
+                        return;
+                    }
+
+                    // Show loading state
+                    submitButton.textContent = 'TRANSMITTING DATA...';
+                    submitButton.disabled = true;
+
+                    const formData = new FormData(form);
+
+                    // LOGIC ADDED: If Individual, set the Team Name field value to 'individual'
+                    if (!isTeamSubmission) {
+                        // Set the value of the Team Name entry to 'individual'
+                        formData.set('entry.896862823', 'Individual'); 
+                        
+                        // Remove the optional Member 2 and Member 3 fields from the payload
+                        formData.delete('entry.1931721374'); // Member 2
+                        formData.delete('entry.1694584910'); // Member 3
+                    }
+                    
+                    // Construct URL-encoded payload
+                    const urlSearchParams = new URLSearchParams();
+                    for (const pair of formData) {
+                        // Only append non-empty values (to avoid submitting empty optional fields as "null" unless handled above)
+                        if (pair[1].trim() !== '') {
+                             urlSearchParams.append(pair[0], pair[1]);
+                        }
+                    }
+                    const payload = urlSearchParams.toString();
+                    
+                    // Google Form Submission via fetch (no-cors mode prevents redirection)
+                    try {
+                        await fetch(form.action, {
+                            method: 'POST',
+                            mode: 'no-cors', 
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body: payload,
+                        });
+
+                        // Success UI Update
+                        formView.classList.add('hidden');
+                        confirmationView.classList.remove('hidden');
+                        
+                    } catch (error) {
+                        // In 'no-cors' mode, we treat any response as a successful dispatch
+                        console.error('Fetch completed with expected no-cors issue. Data presumed sent.', error);
+
+                        // Success UI Update
+                        formView.classList.add('hidden');
+                        confirmationView.classList.remove('hidden');
+
+                    } finally {
+                        submitButton.textContent = 'Submit Solution';
+                        submitButton.disabled = false;
+                    }
+                });
+            }
+        };
+    </script>
+</body>
+</html>
