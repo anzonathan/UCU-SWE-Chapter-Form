@@ -182,8 +182,23 @@
       "teamName": "Individual",
       "score": 80,
       "submissionTime": "10/31/2025 5:26:23"
-    }
-
+    },
+    {
+      "id": 25,
+      "round": 7,
+      "participantName": "Bukira Sophonie",
+      "teamName": "Individual",
+      "score": 40,
+      "submissionTime": "10/31/2025 5:26:23"
+    },
+    {
+      "id": 26,
+      "round": 7,
+      "participantName": "Matthias Yovani Imani",
+      "teamName": "Individual",
+      "score": 87,
+      "submissionTime": "10/31/2025 5:26:23"
+    },
 
 
 
